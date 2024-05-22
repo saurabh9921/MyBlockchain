@@ -7,6 +7,7 @@ class Block{
         this.prevhash=prevhash;
         this.hash=hash;
         this.data=data; 
+        
 
     }
     static genesis(){
@@ -31,8 +32,10 @@ class Block{
      data:"hello w",
      hash:"0xsaf",});
  //console.log(block1);
- const genesisBlock=Block.genesis();
- console.log(genesisBlock);
+//  const genesisBlock=Block.genesis();
+//  console.log(genesisBlock);
 
- const result=Block.minBlock({prevBlock:block1,data:"block2"});
- console.log(result);
+//  const result=Block.minBlock({prevBlock:block1,data:"block2"});
+//  console.log(result);
+
+module.exports=Block;

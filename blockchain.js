@@ -28,18 +28,18 @@ class Blockchain{
         if(JSON.stringify(chain[0])==JSON.stringify(Block.genesis()))return false;
 
         for(let i=1;i<chain.length;i++){
-            const{timestrap,prevHash,hash,data}=chain[i];
+            const{timestrap,prevHash,hash,nonce,difficulty,data}=chain[i];
             const realLastHash=chain[i-1].hash;
 
-            if(prevHash!==realLastHash) return false;
+            if(prevHash!==realLastHash)return false;
 
-            const validateHash=cryptoHash(timestrap,prevHash,data);
+            const validateHash=cryptoHash(timestrap,prevHash,nonce,difficulty,data);
             if(hash!==validateHash)return false;
         }
         return true;
     }
 }
 const blockchain=new Blockchain();
-blockchain.addBlock({data:"block1"})
+blockchain.addBlock({data:"block1"});
 console.log(blockchain);
 module.exports=Blockchain;

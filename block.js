@@ -1,5 +1,7 @@
+const hexToBinary=require("hex-to-binary");
 const {GENESIS_DATA}=require("./config");
 const cryptoHash=require("./crypto-hash");
+const MINE_RATE=1000;
 
 class Block{
     constructor({timestamp,prevhash,hash,data,nonce,difficulty}){
@@ -17,13 +19,14 @@ class Block{
     static minBlock({prevBlock,data}){
        let hash,timestamp;
         const prevhash=prevBlock.hash;
-        const {difficulty}=prevBlock;
+        let {difficulty}=prevBlock;
         let nonce=0;
         do{
             nonce++;
             timestamp=Date.now();
+            difficulty=Block.adjustDifficulty({originalBlock: prevBlock,timestamp,});
             hash=cryptoHash(timestamp,prevhash,data,nonce,difficulty)
-        }while(hash.substring(0,difficulty)!='0'.repeat(difficulty));
+        }while(hexToBinary(hash).substring(0,difficulty)!=="0".repeat(difficulty));
 
         return new this({
         timestamp,
@@ -32,8 +35,16 @@ class Block{
         difficulty,
         nonce,
         hash,
-        });
+        }); 
+    }
 
+    static adjustDifficulty({originalBlock,timestamp}){
+        const {difficulty}=originalBlock;
+        if(difficulty<1) return 1;
+        const difference=timestamp-originalBlock.timestamp;
+        if(difference > MINE_RATE) return difficulty-1;
+        
+        return difficulty+1;
     }
 }
  const block1 =new Block({
@@ -41,7 +52,7 @@ class Block{
      prevhash:"0jjbg",
      data:"hello w",
      hash:"0xsaf",});
-     
+
  //console.log(block1);
 //  const genesisBlock=Block.genesis();
 //  console.log(genesisBlock);

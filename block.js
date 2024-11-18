@@ -1,7 +1,7 @@
 const hexToBinary=require("hex-to-binary");
-const {GENESIS_DATA}=require("./config");
+const {GENESIS_DATA,MINE_RATE }=require("./config");
 const cryptoHash=require("./crypto-hash");
-const MINE_RATE=1000;
+// const MINE_RATE=1000;
 
 class Block{
     constructor({timestamp,prevhash,hash,data,nonce,difficulty}){
